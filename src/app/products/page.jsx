@@ -98,7 +98,7 @@ export default function Products() {
                       <h2 className="text-2xl">{product.product_name}</h2>
                       <p className="text-gray-600">{product.description}</p>
                       <p className="text-3xl mt-2">&#8377;{product.price}</p>
-                      <p className="bg-gray-200 w-fit px-4 rounded-4xl mt-2 mx-auto sm:mx-0 text-center text-sm">{product.in_stock ? "In stock" : "Out of stock"}</p>
+                      <p className={`bg-gray-200 w-fit px-4 rounded-4xl mt-2 mx-auto sm:mx-0 text-center text-sm ${product.in_stock ? "text-green-600" : "text-red-600"}`}>{product.in_stock ? "In stock" : "Out of stock"}</p>
                       <p className="text-gray-600 pt-2">{product.seller}</p>
                       <button 
                       onClick={() => handleAddToCart(product.product_id)}

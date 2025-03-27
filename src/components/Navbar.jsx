@@ -69,7 +69,7 @@ export default function Navbar() {
       </nav>
 
       {/* Second Navbar for Categories */}
-      <nav className="bg-gray-800 text-white px-6 py-3 shadow-sm">
+      <nav className="bg-gray-800 text-white px-6 shadow-sm">
         <div className="container mx-auto flex justify-between">
           <button
             className="lg:hidden text-white text-2xl"
@@ -77,13 +77,13 @@ export default function Navbar() {
           >
             ☰
           </button>
-          <div className="hidden lg:flex overflow-x-auto space-x-6">
-          <Link href={`/products`} className="hover:text-gray-300 transition">
+          <div className="hidden lg:flex overflow-x-auto space-x-6 ">
+          <Link href={`/products`} className="hover:text-gray-300 transition px-1 py-3 border border-transparent hover:border-white">
                   All products
           </Link>
             {categories.length > 0 ? (
               categories.map((category) => (
-                <Link key={category.category_id} href={`/products/${category.category_id}`} className="hover:text-gray-300 transition">
+                <Link key={category.category_id} href={`/products/${category.category_id}`} className="hover:text-gray-300 transition border py-3 px-1 border-transparent hover:border-white">
                   {category.category_type}
                 </Link>
               ))
@@ -104,7 +104,7 @@ export default function Navbar() {
                 <Link
                   key={category.category_id}
                   href={`/products/${category.category_id}`}
-                  className="mt-4 hover:text-gray-300 transition"
+                  className="mt-4 hover:text-gray-300 transition "
                   onClick={() => setIsCategoryOffcanvasOpen(false)}
                 >
                   {category.category_type}

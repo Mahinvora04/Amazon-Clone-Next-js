@@ -39,7 +39,7 @@ const PaginationComponent = ({
       {/* Pagination Controls */}
       <div className="flex items-center space-x-2">
         <button
-          className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+          className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300 disabled:opacity-50 hover:cursor-pointer"
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
@@ -54,7 +54,7 @@ const PaginationComponent = ({
           ) : (
             <button
               key={index}
-              className={`px-3 py-1 rounded-md ${
+              className={`px-3 py-1 rounded-md hover:cursor-pointer ${
                 page === currentPage
                   ? "bg-gray-800 text-white"
                   : "bg-gray-200 hover:bg-gray-300"
@@ -67,7 +67,7 @@ const PaginationComponent = ({
         )}
 
         <button
-          className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+          className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300 disabled:opacity-50 hover:cursor-pointer"
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
@@ -87,10 +87,10 @@ const PaginationComponent = ({
         <select
           value={pageSize}
           onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-          className="border border-gray-200 rounded-md px-2 py-1 bg-white focus:ring focus:border-black-100"
+          className="border border-gray-200 rounded-md px-2 py-1 bg-white focus:ring focus:border-black-100 hover:cursor-pointer"
         >
           {pageSizes.map((size) => (
-            <option key={size} value={size}>
+            <option key={size} value={size} >
               {size} / page
             </option>
           ))}

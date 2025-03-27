@@ -90,7 +90,7 @@ export default function Filter({ handleFilterFieldsChange }) {
 
             <button 
                 onClick={applyFilter} 
-                className="mt-6 w-full bg-gray-900 text-white py-2 rounded-md hover:bg-blue-700 transition"
+                className="mt-6 w-full bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 hover:cursor-pointer transition"
             >
                 Apply Filter
             </button>
