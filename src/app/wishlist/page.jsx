@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import useAuthStore from '../store';
 
@@ -17,13 +17,19 @@ const Wishlist = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    getCartByUserId().then(() => setLoading(false));
-  }, [getCartByUserId]);
-
-  useEffect(() => {
-    getWishlistByUserId().then(() => setLoading(false));
-  }, [getWishlistByUserId]);
+ const hasFetchedData = useRef(false); 
+ 
+   useEffect(() => {
+     if (!hasFetchedData.current) {
+       hasFetchedData.current = true; 
+       const fetchData = async () => {
+         await getCartByUserId();
+         await getWishlistByUserId();
+         setLoading(false);
+       };
+       fetchData();
+     }
+   }, []);
 
   const handleAddToCart = async (productId) => {
     await addToCart(productId);
@@ -38,7 +44,7 @@ const Wishlist = () => {
   return (
     <div className="mx-auto p-4 bg-gray-100 text-black">
       <div className="bg-white m-5 p-5">
-        <h2 className="text-2xl font-bold mb-4 text-center sm:text-left">
+        <h2 className="text-2xl font-bold mb-4 text-center sm:text-left pb-4 border-b border-gray-300">
           Wishlist
         </h2>
         {loading ? (

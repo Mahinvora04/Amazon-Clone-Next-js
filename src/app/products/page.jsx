@@ -5,10 +5,11 @@ import { useParams } from "next/navigation";
 import useAuthStore from "../store";
 import Filter from "../../components/Filter";
 import PaginationComponent from "../../components/PaginationComponent";
+import Loader from "../../components/Loader"
 
 export default function Products() {
   const { categoryId } = useParams(); 
-  const { isLoading,products, fetchProducts ,productsCount ,addToCart, cart,getCartByUserId,addToWishlist, wishlist,getWishlistByUserId} = useAuthStore(); 
+  const { isFilterLoading,isLoading,products, fetchProducts ,productsCount ,addToCart, cart,getCartByUserId,addToWishlist, wishlist,getWishlistByUserId} = useAuthStore(); 
   const [filterFields, setFilterFields] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,8 +20,8 @@ export default function Products() {
   });
 
   useEffect(() => {
-    fetchProducts(categoryId);
-  }, [categoryId, fetchProducts]);
+    fetchProducts();
+  }, [fetchProducts]);
 
   useEffect(() => {
     getCartByUserId();
@@ -72,16 +73,17 @@ export default function Products() {
   }
 
   return (
-    <div className="flex p-4 bg-white text-black">
+   ( isLoading) ? (
+      <Loader/>
+    ) :
+   ( <div className="flex p-4 bg-white text-black">
       <div className="hidden lg:block w-full lg:w-1/4">
         <Filter
         handleFilterFieldsChange={handleFilterFieldsChange}
         />
       </div>      
       <div>
-        {isLoading ? (
-            <p>Loading products...</p>
-          ) : products.length === 0 ? (
+        { products.length === 0 ? (
             <p>No products found.</p>
           ) : (
           <>
@@ -141,6 +143,6 @@ export default function Products() {
           </>
         )}
       </div>
-    </div>
+    </div>)
   );
 }

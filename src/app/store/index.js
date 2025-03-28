@@ -179,7 +179,7 @@ const useAuthStore = create((set) => ({
   },
 
   fetchFilterOptions: async (categoryId) => {
-    set({ isLoading: true });
+    // set({ isLoading: true });
     let url = '/filter-options';
     if (categoryId) {
       url += `/${categoryId}`;
