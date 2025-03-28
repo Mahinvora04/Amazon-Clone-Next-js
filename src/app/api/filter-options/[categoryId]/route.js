@@ -12,21 +12,20 @@ export async function GET(req, { params }) {
       { value: 'in_stock', label: 'Availability' },
     ];
 
-    const stockFilterValues = [
-      { stock: 'In stock' },
-      { stock: 'Out of stock' },
-    ];
+    const stockFilterValues = ['In stock', 'Out of stock'];
 
     const [sellerFilterValues] = await db.query(
       'SELECT DISTINCT seller FROM products WHERE category_id = ?',
       [categoryId],
     );
 
+    const sellerArray = sellerFilterValues.map((item) => item.seller);
+
     return NextResponse.json({
       success: true,
       status: 200,
       data,
-      sellerFilterValues,
+      sellerArray,
       stockFilterValues,
     });
   } catch (err) {

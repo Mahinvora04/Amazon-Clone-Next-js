@@ -41,45 +41,37 @@ const useAuthStore = create((set) => ({
   fetchedUser: {},
   cart: [],
   wishlist: [],
-  isLoading: false,
 
   registerUser: async (formData) => {
-    set({ message: '', isLoading: true });
+    set({ message: '' });
 
     try {
       const registerUserResponse = await api.post('/auth/register', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       if (registerUserResponse?.data?.status === 200) {
-        set({ isLoading: false });
         return { success: true, message: registerUserResponse?.data?.message };
       }
     } catch (error) {
-      set({ isLoading: false });
       return { success: false, error: 'failed to register! ', error };
     }
   },
 
   loginUser: async (data) => {
-    set({ isLoading: true });
     try {
       const loginUserResponse = await api.post('/auth/login', data);
       if (loginUserResponse?.data?.status === 200) {
-        set({ isLoading: false });
         return { success: true, message: loginUserResponse?.data?.message };
       }
     } catch (error) {
-      set({ isLoading: false });
       return { success: false, error: 'failed to login! ', error };
     }
   },
 
   logoutUser: async () => {
-    set({ isLoading: true });
     try {
       const logoutResponse = await api.post('/auth/logout');
       if (logoutResponse?.data?.status === 200) {
-        set({ isLoading: false });
         return { success: true, message: logoutResponse?.data?.message };
       }
     } catch (error) {
@@ -88,41 +80,33 @@ const useAuthStore = create((set) => ({
   },
 
   fetchUserProfile: async () => {
-    set({ isLoading: true });
-
     try {
       const fetchUserProfileResponse = await api.get(`/users`);
       if (fetchUserProfileResponse?.data?.status === 200) {
         const userData = fetchUserProfileResponse?.data?.userResult;
-        set({ fetchedUser: userData, isLoading: false });
+        set({ fetchedUser: userData });
         return { success: true };
       }
     } catch (error) {
-      set({ isLoading: false });
       return { error: 'Failed to fetch profile data', error };
     }
   },
 
   updateUserProfile: async (payload) => {
-    set({ isLoading: true });
     try {
       const updateUserProfileResponse = await api.put('/users', payload);
       if (updateUserProfileResponse?.data?.status === 200) {
-        set({ isLoading: false });
         return {
           success: true,
           message: updateUserProfileResponse?.data?.message,
         };
       }
     } catch (error) {
-      set({ isLoading: false });
       return { error: 'Failed to update profile', error };
     }
   },
 
   fetchProducts: async (categoryId = null, payload = {}) => {
-    set({ isLoading: true });
-
     let url = '/products';
     if (categoryId) {
       url += `/${categoryId}`;
@@ -134,18 +118,14 @@ const useAuthStore = create((set) => ({
         set({
           products: fetchProductsResponse?.data?.products,
           productsCount: fetchProductsResponse?.data?.count,
-          isLoading: false,
         });
       }
     } catch (error) {
-      set({ isLoading: false });
       console.error('Fetch Error:', error);
     }
   },
 
   getCategoryTypeById: async (categoryId) => {
-    set({ isLoading: true });
-
     try {
       const getCategoryTypeByIdResponse = await api.get(
         `category-type/${categoryId}`,
@@ -153,33 +133,27 @@ const useAuthStore = create((set) => ({
       if (getCategoryTypeByIdResponse?.data?.status === 200) {
         set({
           categoryType: getCategoryTypeByIdResponse?.data?.categoryType,
-          isLoading: false,
         });
       }
     } catch (error) {
-      set({ isLoading: false });
       console.error('Fetch Error:', error);
     }
   },
 
   fetchCategories: async () => {
-    set({ isLoading: true });
     try {
       const fetchCategoriesResponse = await api.get('/categories');
       if (fetchCategoriesResponse?.data?.status === 200) {
         set({
           categories: fetchCategoriesResponse?.data?.categories,
-          isLoading: false,
         });
       }
     } catch (error) {
-      set({ isLoading: false });
       console.error('Failed to fetch categories!', error);
     }
   },
 
   fetchFilterOptions: async (categoryId) => {
-    // set({ isLoading: true });
     let url = '/filter-options';
     if (categoryId) {
       url += `/${categoryId}`;
@@ -191,14 +165,12 @@ const useAuthStore = create((set) => ({
         set({
           filterOptions: fetchFilterOptionsResponse?.data?.data,
           sellerFilterValues:
-            fetchFilterOptionsResponse?.data?.sellerFilterValues,
+            fetchFilterOptionsResponse?.data?.sellerArray,
           stockFilterValues:
             fetchFilterOptionsResponse?.data?.stockFilterValues,
-          isLoading: false,
         });
       }
     } catch (error) {
-      set({ isLoading: false });
       console.error('Fetch Error:', error);
     }
   },
@@ -231,9 +203,12 @@ const useAuthStore = create((set) => ({
 
   increaseProductQuantity: async (productId) => {
     try {
-      const increaseProductQuantityResponse = await axios.put('/api/cart/update-quantity/increase', {
-        productId: productId,
-      });
+      const increaseProductQuantityResponse = await axios.put(
+        '/api/cart/update-quantity/increase',
+        {
+          productId: productId,
+        },
+      );
       if (increaseProductQuantityResponse?.data?.status === 200) {
         return { success: true };
       }
@@ -244,9 +219,12 @@ const useAuthStore = create((set) => ({
 
   decreaseProductQuantity: async (productId) => {
     try {
-      const decreaseProductQuantityResponse = await axios.put('/api/cart/update-quantity/decrease', {
-        productId: productId,
-      });
+      const decreaseProductQuantityResponse = await axios.put(
+        '/api/cart/update-quantity/decrease',
+        {
+          productId: productId,
+        },
+      );
       if (decreaseProductQuantityResponse?.data?.status === 200) {
         return { success: true };
       }

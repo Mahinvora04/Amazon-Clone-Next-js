@@ -67,14 +67,14 @@ export default function Filter({ handleFilterFieldsChange }) {
                       type="checkbox"
                       id={`seller-${idx}`}
                       className="cursor-pointer"
-                      checked={selectedFilters.seller.includes(seller.seller)}
-                      onChange={() => handleSellerChange(seller.seller)}
+                      checked={selectedFilters.seller.includes(seller)}
+                      onChange={() => handleSellerChange(seller)}
                     />
                     <label
                       htmlFor={`seller-${idx}`}
                       className="cursor-pointer pl-2"
                     >
-                      {seller.seller}
+                      {seller}
                     </label>
                   </li>
                 ))}
@@ -94,15 +94,15 @@ export default function Filter({ handleFilterFieldsChange }) {
                         className="cursor-pointer"
                         checked={
                           selectedFilters.in_stock ===
-                          (stock.stock === 'In stock' ? 1 : 0)
+                          (stock === 'In stock' ? 1 : 0)
                         }
-                        onChange={() => handleStockChange(stock.stock)}
+                        onChange={() => handleStockChange(stock)}
                       />
                       <label
                         htmlFor={`stock-${idx}`}
                         className="cursor-pointer pl-2"
                       >
-                        {stock.stock}
+                        {stock}
                       </label>
                     </li>
                   ))}

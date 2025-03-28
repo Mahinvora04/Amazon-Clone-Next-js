@@ -9,7 +9,7 @@ import Loader from "../../components/Loader"
 
 export default function Products() {
   const { categoryId } = useParams(); 
-  const { isFilterLoading,isLoading,products, fetchProducts ,productsCount ,addToCart, cart,getCartByUserId,addToWishlist, wishlist,getWishlistByUserId} = useAuthStore(); 
+  const {products, fetchProducts ,productsCount ,addToCart, cart,getCartByUserId,addToWishlist, wishlist,getWishlistByUserId} = useAuthStore(); 
   const [filterFields, setFilterFields] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,6 +18,8 @@ export default function Products() {
     limit: pageSize,
     filters: filterFields,
   });
+
+  const isLoading=false;
 
   useEffect(() => {
     fetchProducts();

@@ -5,11 +5,12 @@ import { useParams } from "next/navigation";
 import useAuthStore from "../../store";
 import Filter from "../../../components/Filter";
 import PaginationComponent from "../../../components/PaginationComponent";
+import Loader from "../../../components/Loader";
 
 export default function Products() {
   const { categoryId } = useParams();
   const { products, productsCount, fetchProducts, categoryType, getCategoryTypeById, addToCart, cart,getCartByUserId,addToWishlist, wishlist,getWishlistByUserId } = useAuthStore();
-  
+  const isLoading=false;
   const [filterFields, setFilterFields] = useState({});
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -60,6 +61,10 @@ export default function Products() {
   }
 
   return (
+    ( isLoading) ? (
+      <Loader/>
+    ) :
+   ( 
     <div className="flex mx-auto p-4 bg-white text-black">
       <div className="hidden lg:block w-full lg:w-1/4">
         <Filter handleFilterFieldsChange={handleFilterFieldsChange}/>
@@ -129,6 +134,6 @@ export default function Products() {
           handlePageSizeChange={handlePageSizeChange}
         />
       </div>
-    </div> 
+    </div> )
   );
 }

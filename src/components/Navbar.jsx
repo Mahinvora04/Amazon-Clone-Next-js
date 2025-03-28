@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
 import useAuthStore from '../app/store';
 
 export default function Navbar() {
@@ -11,7 +12,13 @@ export default function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isCategoryOffcanvasOpen, setIsCategoryOffcanvasOpen] = useState(false);
   const router = useRouter();
-  const { logoutUser, categories, fetchCategories ,fetchedUser,fetchUserProfile} = useAuthStore();
+  const {
+    logoutUser,
+    categories,
+    fetchCategories,
+    fetchedUser,
+    fetchUserProfile,
+  } = useAuthStore();
 
   useEffect(() => {
     const token = Cookies.get('authToken');
@@ -33,17 +40,27 @@ export default function Navbar() {
       <nav className="bg-gray-900 text-white px-6 py-4 shadow-md w-full">
         <div className="container mx-auto flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold flex items-center">
-            <img src="../../logo/amazon_logo.png" alt="amazon logo" className="w-24 h-auto" />
+            <img
+              src="../../logo/amazon_logo.png"
+              alt="amazon logo"
+              className="w-24 h-auto"
+            />
           </Link>
-          <div className="flex space-x-6 items-center">   
-          {isLoggedIn && (
-            <>
-              <Link href="/cart" className="hover:text-gray-300 transition">Cart
-              </Link>
+          <div className="flex space-x-6 items-center">
+            {isLoggedIn && (
+              <>
+                <Link href="/cart" className="hover:text-gray-300 transition">
+                  Cart
+                </Link>
 
-              <Link href="/wishlist" className="hover:text-gray-300 transition">{fetchedUser?.name?.split(" ")[0]} 's Wishlist</Link>
-            </>
-          )}
+                <Link
+                  href="/wishlist"
+                  className="hover:text-gray-300 transition"
+                >
+                  {fetchedUser?.name?.split(' ')[0]} 's Wishlist
+                </Link>
+              </>
+            )}
 
             {isLoggedIn ? (
               <div className="relative">
@@ -55,18 +72,36 @@ export default function Navbar() {
                 </button>
                 {isProfileOpen && (
                   <div className="absolute right-0 mt-2 w-40 bg-white text-gray-900 rounded-lg shadow-lg z-10">
-                    <Link onClick={closeDropdown}  href="/profile" className="block px-4 py-2 hover:bg-gray-200">View Profile</Link>
-                    <button onClick={() => {
-                      handleLogout();
-                      closeDropdown(); 
-                    }} className="block w-full text-left px-4 py-2 hover:bg-gray-200">Log Out</button>
+                    <Link
+                      onClick={closeDropdown}
+                      href="/profile"
+                      className="block px-4 py-2 hover:bg-gray-200"
+                    >
+                      View Profile
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        closeDropdown();
+                      }}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                    >
+                      Log Out
+                    </button>
                   </div>
                 )}
               </div>
             ) : (
               <>
-                <Link href="/login" className="hover:text-gray-300 transition">Login</Link>
-                <Link href="/register" className="hover:text-gray-300 transition">Register</Link>
+                <Link href="/login" className="hover:text-gray-300 transition">
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  className="hover:text-gray-300 transition"
+                >
+                  Register
+                </Link>
               </>
             )}
           </div>
@@ -82,20 +117,22 @@ export default function Navbar() {
           >
             ☰
           </button>
-          <Link href={`/products`} className="hover:text-gray-300 transition px-1 py-3 border border-transparent hover:border-white">
-                  All products
+          <Link
+            href={`/products`}
+            className="hover:text-gray-300 transition px-1 py-3 border border-transparent hover:border-white"
+          >
+            All products
           </Link>
           <div className="hidden lg:flex overflow-x-auto space-x-6 ">
-          
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <Link key={category.category_id} href={`/products/${category.category_id}`} className="hover:text-gray-300 transition border py-3 px-1 border-transparent hover:border-white">
-                  {category.category_type}
-                </Link>
-              ))
-            ) : (
-              <span className="text-gray-400">Loading categories...</span>
-            )}
+            {categories.map((category) => (
+              <Link
+                key={category.category_id}
+                href={`/products/${category.category_id}`}
+                className="hover:text-gray-300 transition border py-3 px-1 border-transparent hover:border-white"
+              >
+                {category.category_type}
+              </Link>
+            ))}
           </div>
         </div>
       </nav>
@@ -104,7 +141,12 @@ export default function Navbar() {
       {isCategoryOffcanvasOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
           <div className="w-64 h-full bg-gray-800 text-white shadow-lg p-6 flex flex-col">
-            <button className="text-white text-2xl self-end" onClick={() => setIsCategoryOffcanvasOpen(false)}>×</button>
+            <button
+              className="text-white text-2xl self-end"
+              onClick={() => setIsCategoryOffcanvasOpen(false)}
+            >
+              ×
+            </button>
             {categories.length > 0 ? (
               categories.map((category) => (
                 <Link
