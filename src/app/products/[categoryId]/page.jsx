@@ -8,7 +8,7 @@ import PaginationComponent from "../../../components/PaginationComponent";
 
 export default function Products() {
   const { categoryId } = useParams();
-  const { products, productsCount, fetchProducts, categoryType, getCategoryTypeById, addToCart, cart,getCartByUserId } = useAuthStore();
+  const { products, productsCount, fetchProducts, categoryType, getCategoryTypeById, addToCart, cart,getCartByUserId,addToWishlist, wishlist,getWishlistByUserId } = useAuthStore();
   
   const [filterFields, setFilterFields] = useState({});
   const [pageSize, setPageSize] = useState(10);
@@ -54,6 +54,11 @@ export default function Products() {
     await getCartByUserId();
   };
 
+  const handleAddToWishlist = async (productId) => {
+    await addToWishlist(productId);
+    await getWishlistByUserId();
+  }
+
   return (
     <div className="flex mx-auto p-4 bg-white text-black">
       <div className="hidden lg:block w-full lg:w-1/4">
@@ -74,6 +79,9 @@ export default function Products() {
           <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
             {products.map((product) => {
              const isInCart = cart.some(
+              (item) => item.product_id === product.product_id  
+            );
+            const isInWishlist = wishlist.some(
               (item) => item.product_id === product.product_id
             );
               return (
@@ -91,7 +99,6 @@ export default function Products() {
                     <h2 className="text-2xl">{product.product_name}</h2>
                     <p className="tex t-gray-600">{product.description}</p>
                     <p className="text-3xl mt-2">&#8377;{product.price}</p>
-                    ${product.in_stock ? "text-green-600" : "text-red-600"}`
                     <p className={`bg-gray-200 w-fit px-4 rounded-4xl mt-2 mx-auto sm:mx-0 text-center text-sm ${product.in_stock ? "text-green-600" : "text-red-600"}`}>{product.in_stock ? "In stock" : "Out of stock"}</p>
                     <p className="text-gray-600 pt-2">{product.seller}</p>
                     
@@ -101,6 +108,12 @@ export default function Products() {
                     >
                       {isInCart ? "Added to Cart" : "Add to Cart"}
                     </button>
+                    <button 
+                      onClick={() => handleAddToWishlist(product.product_id)}
+                      className={`px-2 text-md mt-3 text-blue-800 hover:cursor-pointer`}
+                      >
+                      {isInWishlist ? "Added to Wishlist" : "Add to Wishlist"}
+                      </button>
                   </div>
                 </div>
               );

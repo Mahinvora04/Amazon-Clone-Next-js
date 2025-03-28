@@ -21,7 +21,6 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       Cookies.remove('authToken');
       Cookies.remove('userId');
-     
     }
     return Promise.reject(error);
   },
@@ -41,7 +40,7 @@ const useAuthStore = create((set) => ({
   stockFilterValues: [],
   fetchedUser: {},
   cart: [],
-  // cartProducts: [],
+  wishlist: [],
   isLoading: false,
 
   registerUser: async (formData) => {
@@ -223,11 +222,62 @@ const useAuthStore = create((set) => ({
       if (getCartByUserIdResponse?.data?.status === 200) {
         set({
           cart: getCartByUserIdResponse?.data?.cart,
-          // cartProducts: getCartByUserIdResponse?.data?.cartProducts,
         });
       }
     } catch (error) {
-      console.error('Failed to fetch categories!', error);
+      console.error('Failed to fetch cart data!', error);
+    }
+  },
+
+  increaseProductQuantity: async (productId) => {
+    try {
+      const increaseProductQuantityResponse = await axios.put('/api/cart/update-quantity/increase', {
+        productId: productId,
+      });
+      if (increaseProductQuantityResponse?.data?.status === 200) {
+        return { success: true };
+      }
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
+  },
+
+  decreaseProductQuantity: async (productId) => {
+    try {
+      const decreaseProductQuantityResponse = await axios.put('/api/cart/update-quantity/decrease', {
+        productId: productId,
+      });
+      if (decreaseProductQuantityResponse?.data?.status === 200) {
+        return { success: true };
+      }
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
+  },
+
+  addToWishlist: async (productId) => {
+    try {
+      const addToWishlistResponse = await axios.post('/api/wishlist/add', {
+        productId: productId,
+      });
+      if (addToWishlistResponse?.data?.status === 200) {
+        return { success: true };
+      }
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
+    }
+  },
+
+  getWishlistByUserId: async () => {
+    try {
+      const getWishlistByUserIdResponse = await api.get('/wishlist');
+      if (getWishlistByUserIdResponse?.data?.status === 200) {
+        set({
+          wishlist: getWishlistByUserIdResponse?.data?.wishlist,
+        });
+      }
+    } catch (error) {
+      console.error('Failed to fetch wishlist data!', error);
     }
   },
 

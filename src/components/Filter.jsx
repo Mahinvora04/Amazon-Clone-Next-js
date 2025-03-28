@@ -36,7 +36,7 @@ export default function Filter({ handleFilterFieldsChange }) {
     };
 
     return (
-      <div className="left-0 top-0 h-screen bg-white p-2 overflow-y-auto border-r border-gray-300">
+      <div className="left-0 top-0 bg-white p-2 overflow-y-auto border-r border-gray-300">
             <ul className="space-y-2 pr-10">
                 {filterOptions?.map((filter, index) => (
                     <li key={index} className="transition duration-300 cursor-pointer">

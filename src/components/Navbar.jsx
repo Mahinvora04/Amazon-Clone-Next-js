@@ -37,14 +37,19 @@ export default function Navbar() {
           </Link>
           <div className="flex space-x-6 items-center">   
           {isLoggedIn && (
-            <Link href="/cart" className="hover:text-gray-300 transition">{fetchedUser?.name?.split(" ")[0]} 's cart</Link>
+            <>
+              <Link href="/cart" className="hover:text-gray-300 transition">Cart
+              </Link>
+
+              <Link href="/wishlist" className="hover:text-gray-300 transition">{fetchedUser?.name?.split(" ")[0]} 's Wishlist</Link>
+            </>
           )}
 
             {isLoggedIn ? (
               <div className="relative">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="hover:text-gray-300 transition"
+                  className="hover:text-gray-300 transition hover:cursor-pointer"
                 >
                   Profile ▼
                 </button>
@@ -72,15 +77,16 @@ export default function Navbar() {
       <nav className="bg-gray-800 text-white px-6 shadow-sm">
         <div className="container mx-auto flex justify-between">
           <button
-            className="lg:hidden text-white text-2xl"
+            className="lg:hidden text-white text-2xl hover:cursor-pointer"
             onClick={() => setIsCategoryOffcanvasOpen(true)}
           >
             ☰
           </button>
-          <div className="hidden lg:flex overflow-x-auto space-x-6 ">
           <Link href={`/products`} className="hover:text-gray-300 transition px-1 py-3 border border-transparent hover:border-white">
                   All products
           </Link>
+          <div className="hidden lg:flex overflow-x-auto space-x-6 ">
+          
             {categories.length > 0 ? (
               categories.map((category) => (
                 <Link key={category.category_id} href={`/products/${category.category_id}`} className="hover:text-gray-300 transition border py-3 px-1 border-transparent hover:border-white">

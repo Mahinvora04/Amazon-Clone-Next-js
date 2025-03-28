@@ -8,7 +8,7 @@ import PaginationComponent from "../../components/PaginationComponent";
 
 export default function Products() {
   const { categoryId } = useParams(); 
-  const { isLoading,products, fetchProducts ,productsCount ,addToCart, cart,getCartByUserId} = useAuthStore(); 
+  const { isLoading,products, fetchProducts ,productsCount ,addToCart, cart,getCartByUserId,addToWishlist, wishlist,getWishlistByUserId} = useAuthStore(); 
   const [filterFields, setFilterFields] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,6 +25,10 @@ export default function Products() {
   useEffect(() => {
     getCartByUserId();
   }, [getCartByUserId]);
+
+  useEffect(() => {
+    getWishlistByUserId();
+  }, [getWishlistByUserId]);
 
    // ** pagination
    const handlePageChange = (page) => {
@@ -62,6 +66,11 @@ export default function Products() {
     await getCartByUserId();
   };
 
+  const handleAddToWishlist = async (productId) => {
+    await addToWishlist(productId);
+    await getWishlistByUserId();
+  }
+
   return (
     <div className="flex p-4 bg-white text-black">
       <div className="hidden lg:block w-full lg:w-1/4">
@@ -81,6 +90,9 @@ export default function Products() {
                 <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                 {products.map((product) => {
                   const isInCart = cart.some(
+                    (item) => item.product_id === product.product_id
+                  );
+                  const isInWishlist = wishlist.some(
                     (item) => item.product_id === product.product_id
                   );
                     return (
@@ -105,6 +117,13 @@ export default function Products() {
                       className={`rounded-4xl px-4 py-1 mt-3 bg-amber-300 hover:cursor-pointer`}
                       >
                       {isInCart ? "Added to Cart" : "Add to Cart"}
+                      </button> 
+                      <br />
+                      <button 
+                      onClick={() => handleAddToWishlist(product.product_id)}
+                      className={`px-2 text-md mt-3 text-blue-800 hover:cursor-pointer`}
+                      >
+                      {isInWishlist ? "Added to Wishlist" : "Add to Wishlist"}
                       </button>
                     </div>
                   </div>
