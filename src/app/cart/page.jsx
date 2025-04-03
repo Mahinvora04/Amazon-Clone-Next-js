@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 
-import useAuthStore from '../store';
+import useStore from '../store';
 
 const Cart = () => {
   const {
@@ -17,7 +17,7 @@ const Cart = () => {
     addToWishlist,
     decreaseProductQuantity,
     increaseProductQuantity,
-  } = useAuthStore();
+  } = useStore();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import useAuthStore from '../app/store';
+import useStore from '../app/store';
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -18,7 +18,7 @@ export default function Navbar() {
     fetchCategories,
     fetchedUser,
     fetchUserProfile,
-  } = useAuthStore();
+  } = useStore();
 
   useEffect(() => {
     const token = Cookies.get('authToken');

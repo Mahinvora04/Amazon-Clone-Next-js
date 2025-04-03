@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import Filter from '../../components/Filter';
 import Loader from '../../components/Loader';
 import PaginationComponent from '../../components/PaginationComponent';
-import useAuthStore from '../store';
+import useStore from '../store';
 
 export default function Products() {
   const { categoryId } = useParams();
@@ -25,7 +25,7 @@ export default function Products() {
     getWishlistByUserId,
     increaseProductQuantity,
     decreaseProductQuantity,
-  } = useAuthStore();
+  } = useStore();
   const [filterFields, setFilterFields] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);

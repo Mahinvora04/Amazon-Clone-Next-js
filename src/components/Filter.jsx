@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-import useAuthStore from '../app/store';
+import useStore from '../app/store';
 
 export default function Filter({ handleFilterFieldsChange }) {
   const { categoryId } = useParams();
@@ -12,12 +12,12 @@ export default function Filter({ handleFilterFieldsChange }) {
     fetchFilterOptions,
     stockFilterValues,
     sellerFilterValues,
-  } = useAuthStore();
+  } = useStore();
 
   const [selectedFilters, setSelectedFilters] = useState({
     seller: [],
     in_stock: null,
-    price: '', 
+    price: '',
   });
 
   const hasFetched = useRef(false);

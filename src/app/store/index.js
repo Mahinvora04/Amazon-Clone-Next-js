@@ -26,7 +26,7 @@ api.interceptors.response.use(
   },
 );
 
-const useAuthStore = create((set) => ({
+const useStore = create((set) => ({
   message: '',
   token: null,
   userId: null,
@@ -164,8 +164,7 @@ const useAuthStore = create((set) => ({
       if (fetchFilterOptionsResponse?.data?.status === 200) {
         set({
           filterOptions: fetchFilterOptionsResponse?.data?.data,
-          sellerFilterValues:
-            fetchFilterOptionsResponse?.data?.sellerArray,
+          sellerFilterValues: fetchFilterOptionsResponse?.data?.sellerArray,
           stockFilterValues:
             fetchFilterOptionsResponse?.data?.stockFilterValues,
         });
@@ -272,4 +271,4 @@ const useAuthStore = create((set) => ({
   },
 }));
 
-export default useAuthStore;
+export default useStore;

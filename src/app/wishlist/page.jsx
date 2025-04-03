@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 
-import useAuthStore from '../store';
+import useStore from '../store';
 
 const Wishlist = () => {
   const {
@@ -13,23 +13,23 @@ const Wishlist = () => {
     wishlist,
     getWishlistByUserId,
     addToWishlist,
-  } = useAuthStore();
+  } = useStore();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
- const hasFetchedData = useRef(false); 
- 
-   useEffect(() => {
-     if (!hasFetchedData.current) {
-       hasFetchedData.current = true; 
-       const fetchData = async () => {
-         await getCartByUserId();
-         await getWishlistByUserId();
-         setLoading(false);
-       };
-       fetchData();
-     }
-   }, []);
+  const hasFetchedData = useRef(false);
+
+  useEffect(() => {
+    if (!hasFetchedData.current) {
+      hasFetchedData.current = true;
+      const fetchData = async () => {
+        await getCartByUserId();
+        await getWishlistByUserId();
+        setLoading(false);
+      };
+      fetchData();
+    }
+  }, []);
 
   const handleAddToCart = async (productId) => {
     await addToCart(productId);
@@ -82,13 +82,15 @@ const Wishlist = () => {
                           className="rounded-4xl px-4 py-1 mx-2 mt-3 bg-amber-300 hover:cursor-pointer"
                           onClick={() => handleAddToCart(product.product_id)}
                         >
-                          {isInCart ? "Added to Cart" : "Add to Cart"}
+                          {isInCart ? 'Added to Cart' : 'Add to Cart'}
                         </button>
                       </span>
                       <span className="sm:mb-0">
                         <button
                           className="text-xs text-blue-600 hover:cursor-pointer mt-4 mr-2"
-                          onClick={() => handleAddToWishlist(product.product_id)}
+                          onClick={() =>
+                            handleAddToWishlist(product.product_id)
+                          }
                         >
                           Delete
                         </button>
@@ -97,7 +99,9 @@ const Wishlist = () => {
                       <span>
                         <button
                           className="text-xs text-blue-600 hover:cursor-pointer mt-4 ml-2"
-                          onClick={() => router.push(`/products/${product.category_id}`)}
+                          onClick={() =>
+                            router.push(`/products/${product.category_id}`)
+                          }
                         >
                           See more like this
                         </button>
