@@ -10,16 +10,14 @@ export async function POST(req) {
   const page = payload.page || 1;
   const limit = payload.limit || 10;
   const offset = (page - 1) * limit;
-  const filters = payload.filters || {}; 
+  const filters = payload.filters || {};
 
   try {
-    // Base query
     let query = 'SELECT * FROM products WHERE 1=1';
     let countQuery = 'SELECT COUNT(*) AS total FROM products WHERE 1=1';
     let queryParams = [];
     let countParams = [];
 
-    // Apply filters dynamically
     if (filters.seller && filters.seller.length > 0) {
       const placeholders = filters.seller.map(() => '?').join(', ');
       query += ` AND seller IN (${placeholders})`;
@@ -29,18 +27,26 @@ export async function POST(req) {
     }
 
     if (filters.in_stock !== null && filters.in_stock !== undefined) {
-      const stockValue = filters.in_stock === '1' ? 1 : 0; 
+      const stockValue = filters.in_stock === '1' ? 1 : 0;
       query += ` AND in_stock = ?`;
       countQuery += ` AND in_stock = ?`;
       queryParams.push(stockValue);
       countParams.push(stockValue);
     }
 
-    // Apply pagination
+    if (filters.price) {
+      if (filters.price === 'low') {
+        query += ' ORDER BY price ASC';
+      } else if (filters.price === 'high') {
+        query += ' ORDER BY price DESC';
+      }
+    }
+
+    // pagination
     query += ` LIMIT ? OFFSET ?`;
     queryParams.push(limit, offset);
 
-    // Fetch total count
+    // total count
     const [countResult] = await db.query(countQuery, countParams);
     const totalRecords = countResult.length > 0 ? countResult[0].total : 0;
 
@@ -54,7 +60,7 @@ export async function POST(req) {
       count: totalRecords,
     });
   } catch (error) {
-    console.error('Database Error:', error);
+    console.error('Error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

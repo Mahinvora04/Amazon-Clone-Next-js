@@ -87,7 +87,7 @@ const Wishlist = () => {
                       </span>
                       <span className="sm:mb-0">
                         <button
-                          className="text-xs text-blue-600 hover:cursor-pointer"
+                          className="text-xs text-blue-600 hover:cursor-pointer mt-4 mr-2"
                           onClick={() => handleAddToWishlist(product.product_id)}
                         >
                           Delete
@@ -96,14 +96,13 @@ const Wishlist = () => {
                       </span>
                       <span>
                         <button
-                          className="text-xs text-blue-600 hover:cursor-pointer"
+                          className="text-xs text-blue-600 hover:cursor-pointer mt-4 ml-2"
                           onClick={() => router.push(`/products/${product.category_id}`)}
                         >
                           See more like this
                         </button>
                       </span>
                     </p>
-
                   </div>
                 </div>
               );

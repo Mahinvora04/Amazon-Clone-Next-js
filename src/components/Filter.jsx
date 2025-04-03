@@ -17,6 +17,7 @@ export default function Filter({ handleFilterFieldsChange }) {
   const [selectedFilters, setSelectedFilters] = useState({
     seller: [],
     in_stock: null,
+    price: '', 
   });
 
   const hasFetched = useRef(false);
@@ -45,18 +46,70 @@ export default function Filter({ handleFilterFieldsChange }) {
     }));
   };
 
+  const handlePriceChange = (order) => {
+    setSelectedFilters((prevFilters) => ({
+      ...prevFilters,
+      price: order,
+    }));
+  };
+
   const applyFilter = () => {
     handleFilterFieldsChange(selectedFilters);
   };
 
+  const clearFilters = () => {
+    setSelectedFilters({
+      seller: [],
+      in_stock: null,
+      price: '',
+    });
+    handleFilterFieldsChange({
+      seller: [],
+      in_stock: null,
+      price: '',
+    });
+  };
+
   return (
-    <div className="left-0 top-0 bg-white p-2 overflow-y-auto border-r border-gray-300">
-      <ul className="space-y-2 pr-10">
+    <div className="left-0 top-0 bg-white p-4 overflow-y-auto border-r border-gray-300 w-64">
+      <ul className="space-y-2">
         {filterOptions?.map((filter, index) => (
           <li key={index} className="transition duration-300 cursor-pointer">
             <label className="cursor-pointer font-semibold text-md">
               {filter.label}
             </label>
+
+            {/* Price Filter */}
+            {filter.label === 'Price' && (
+              <ul className="mt-2 space-y-1 text-gray-700">
+                <li className="px-2 cursor-pointer text-sm">
+                  <input
+                    type="radio"
+                    id="price-low"
+                    name="price"
+                    className="cursor-pointer"
+                    checked={selectedFilters.price === 'low'}
+                    onChange={() => handlePriceChange('low')}
+                  />
+                  <label htmlFor="price-low" className="cursor-pointer pl-2">
+                    Low to High
+                  </label>
+                </li>
+                <li className="px-2 cursor-pointer text-sm">
+                  <input
+                    type="radio"
+                    id="price-high"
+                    name="price"
+                    className="cursor-pointer"
+                    checked={selectedFilters.price === 'high'}
+                    onChange={() => handlePriceChange('high')}
+                  />
+                  <label htmlFor="price-high" className="cursor-pointer pl-2">
+                    High to Low
+                  </label>
+                </li>
+              </ul>
+            )}
 
             {/* Seller Filter */}
             {filter.label === 'Seller' && sellerFilterValues?.length > 0 && (
@@ -112,12 +165,21 @@ export default function Filter({ handleFilterFieldsChange }) {
         ))}
       </ul>
 
-      <button
-        onClick={applyFilter}
-        className="mt-6 w-full bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 hover:cursor-pointer transition"
-      >
-        Apply Filter
-      </button>
+      {/* Buttons */}
+      <div className="mt-6 space-y-2">
+        <button
+          onClick={applyFilter}
+          className="w-full bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 transition hover:cursor-pointer"
+        >
+          Apply Filter
+        </button>
+        <button
+          onClick={clearFilters}
+          className="w-full bg-gray-400 text-white py-2 rounded-md hover:bg-gray-500 transition hover:cursor-pointer"
+        >
+          Clear Filters
+        </button>
+      </div>
     </div>
   );
 }

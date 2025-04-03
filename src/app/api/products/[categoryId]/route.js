@@ -14,16 +14,14 @@ export async function POST(req, { params }) {
   const filters = payload.filters || {};
 
   try {
-    // Base query
     let query = 'SELECT * FROM products WHERE category_id = ?';
     let countQuery =
       'SELECT COUNT(*) AS total FROM products WHERE category_id = ?';
     let queryParams = [categoryId];
     let countParams = [categoryId];
 
-    // Apply filters dynamically
     if (filters.seller && filters.seller.length > 0) {
-      const placeholders = filters.seller.map(() => '?').join(', '); 
+      const placeholders = filters.seller.map(() => '?').join(', ');
       query += ` AND seller IN (${placeholders})`;
       countQuery += ` AND seller IN (${placeholders})`;
       queryParams.push(...filters.seller);
@@ -37,15 +35,22 @@ export async function POST(req, { params }) {
       countParams.push(filters.in_stock);
     }
 
+    if (filters.price) {
+      if (filters.price === 'low') {
+        query += ' ORDER BY price ASC';
+      } else if (filters.price === 'high') {
+        query += ' ORDER BY price DESC';
+      }
+    }
+
     // pagination
     query += ` LIMIT ? OFFSET ?`;
     queryParams.push(limit, offset);
 
-    // Get total records count
+    // total records
     const [countResult] = await db.query(countQuery, countParams);
     const totalRecords = countResult[0]?.total || 0;
 
-    // Fetch products with filters and pagination
     const [products] = await db.query(query, queryParams);
 
     if (products.length === 0) {

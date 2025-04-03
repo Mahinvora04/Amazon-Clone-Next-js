@@ -1,7 +1,9 @@
 'use client';
 
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import useAuthStore from '../store';
 
@@ -97,14 +99,28 @@ const Cart = () => {
                     <p className="text-gray-600 pt-2 flex flex-col items-center justify-center text-center md:flex-row sm:justify-start sm:items-center space-x-3">
                       {/* Quantity Selector */}
                       <span className="inline-flex items-center space-x-3 rounded-4xl border-4 border-amber-300 px-2 py-1">
-                        <button
-                          className="text-lg font-bold text-black px-2 hover:cursor-pointer"
-                          onClick={() =>
-                            handleDecreaseQuantity(product.product_id)
-                          }
-                        >
-                          −
-                        </button>
+                        {product.quantity > 1 ? (
+                          <button
+                            className="text-lg font-bold text-black px-2 hover:cursor-pointer"
+                            onClick={() =>
+                              handleDecreaseQuantity(product.product_id)
+                            }
+                          >
+                            −
+                          </button>
+                        ) : (
+                          <>
+                            <button
+                              className="text-lg font-bold text-black px-2 hover:cursor-pointer"
+                              onClick={() =>
+                                handleAddToCart(product.product_id)
+                              }
+                            >
+                              {' '}
+                              <FontAwesomeIcon icon={faTrash} />
+                            </button>
+                          </>
+                        )}
 
                         <span className="text-sm font-medium text-gray-700">
                           {product.quantity}
