@@ -6,7 +6,7 @@ import { db } from '@/lib/db';
 
 export async function POST(req) {
   try {
-    const cookieStore = cookies();
+    const cookieStore =await cookies();
     const userId = cookieStore.get('userId')?.value;
 
     if (!userId) {
@@ -16,16 +16,14 @@ export async function POST(req) {
       );
     }
 
-    const { productId } = await req.json(); // Extract productId from request body
+    const { productId } = await req.json(); 
 
-    // Check if the product already exists in the cart
     const [existingCartItem] = await db.query(
       'SELECT * FROM cart WHERE user_id = ? AND product_id = ?',
       [userId, productId],
     );
 
     if (existingCartItem.length > 0) {
-      // Remove product from the cart
       await db.query('DELETE FROM cart WHERE user_id = ? AND product_id = ?', [
         userId,
         productId,
@@ -37,10 +35,8 @@ export async function POST(req) {
         message: 'Product removed from cart',
       });
     } else {
-      // Generate a unique cart_id using nanoid
       const cartId = nanoid();
 
-      // Insert product into the cart
       await db.query(
         'INSERT INTO cart (cart_id, user_id, product_id, quantity) VALUES (?, ?, ?, ?)',
         [cartId, userId, productId, 1],

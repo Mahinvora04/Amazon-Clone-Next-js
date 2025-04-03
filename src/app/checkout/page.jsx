@@ -1,16 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import useStore from '../store';
 
 const Checkout = () => {
   const { cart, getCartByUserId, fetchUserProfile, fetchedUser } = useStore();
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-
   const hasFetchedData = useRef(false);
 
   useEffect(() => {
@@ -19,7 +15,6 @@ const Checkout = () => {
       const fetchData = async () => {
         await fetchUserProfile();
         await getCartByUserId();
-        setLoading(false);
       };
       fetchData();
     }
@@ -37,10 +32,12 @@ const Checkout = () => {
         <h2 className=" text-xl font-bold pb-1 text-center sm:text-left">
           Delivering to {fetchedUser.name}
         </h2>
-        <p className="pb-4">{fetchedUser.address}</p>
-        <Link href="/cart" className="text-blue-600 text-xs hover:underline">
-          Back to cart
-        </Link>
+        <p className="pb-4 text-center sm:text-left">{fetchedUser.address}</p>
+        <p className="pb-4 text-center sm:text-left">
+          <Link href="/cart" className="text-blue-600 text-xs hover:underline">
+            Back to cart
+          </Link>
+        </p>
       </div>
 
       {/* Right Section  */}

@@ -11,7 +11,7 @@ export default function LayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '';
   const hideNavbarRoutes = ['/login', '/register'];
 
   return (
